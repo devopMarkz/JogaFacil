@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: joga-facil
+  profiles:
+    active: test
