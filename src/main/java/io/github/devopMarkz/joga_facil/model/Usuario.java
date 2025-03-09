@@ -39,6 +39,13 @@ public class Usuario implements UserDetails {
     public Usuario() {
     }
 
+    public Usuario(String nome, String email, String senha, String telefone) {
+        this.nome = nome;
+        this.email = email;
+        this.senha = senha;
+        this.telefone = telefone;
+    }
+
     public Usuario(Long id, String nome, String email, String senha, String telefone) {
         this.id = id;
         this.nome = nome;
