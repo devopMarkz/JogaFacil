@@ -2,6 +2,7 @@ package io.github.devopMarkz.joga_facil.services;
 
 import io.github.devopMarkz.joga_facil.model.Usuario;
 import io.github.devopMarkz.joga_facil.repositories.UsuarioRepository;
+import io.github.devopMarkz.joga_facil.services.impl.UserDetailsServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

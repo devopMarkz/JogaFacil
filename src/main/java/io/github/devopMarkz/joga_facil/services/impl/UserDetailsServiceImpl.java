@@ -1,4 +1,4 @@
-package io.github.devopMarkz.joga_facil.services;
+package io.github.devopMarkz.joga_facil.services.impl;
 
 import io.github.devopMarkz.joga_facil.repositories.UsuarioRepository;
 import org.springframework.security.core.userdetails.UserDetails;
