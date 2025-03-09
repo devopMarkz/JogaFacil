@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_usuario")
@@ -34,7 +35,7 @@ public class Usuario implements UserDetails {
             joinColumns = @JoinColumn(name = "id_usuario"),
             inverseJoinColumns = @JoinColumn(name = "id_role")
     )
-    private HashSet<Role> roles = new HashSet<>();
+    private Set<Role> roles = new HashSet<>();
 
     public Usuario() {
     }
@@ -94,7 +95,7 @@ public class Usuario implements UserDetails {
         this.telefone = telefone;
     }
 
-    public HashSet<Role> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
 
