@@ -41,8 +41,8 @@ class UsuarioRepositoryTest {
     }
 
     @Test
-    @DisplayName("Given Person Email when SearchByEmail then Return Person Object")
-    void testGivenPersonId_whenFindById_thenReturnPersonObject() {
+    @DisplayName("Given Person Email when SearchByEmail then Return Usuario Object")
+    void testGivenPersonId_whenFindById_thenReturnUsuarioObject() {
         // Arrange
         String email = "marcos@gmail.com";
 
