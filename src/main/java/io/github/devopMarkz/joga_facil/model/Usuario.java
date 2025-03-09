@@ -98,6 +98,10 @@ public class Usuario implements UserDetails {
         return roles;
     }
 
+    public void addRole(Role role){
+        roles.add(role);
+    }
+
     @Override
     public boolean equals(Object object) {
         if (this == object) return true;
