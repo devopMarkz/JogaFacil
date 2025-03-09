@@ -6,6 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_role")
@@ -20,7 +21,7 @@ public class Role implements GrantedAuthority {
     private RoleEnum authority;
 
     @ManyToMany(mappedBy = "roles")
-    private HashSet<Usuario> usuarios = new HashSet<>();
+    private Set<Usuario> usuarios = new HashSet<>();
 
     public Role(Integer id, RoleEnum authority) {
         this.id = id;
@@ -44,7 +45,7 @@ public class Role implements GrantedAuthority {
         this.authority = authority;
     }
 
-    public HashSet<Usuario> getUsuarios() {
+    public Set<Usuario> getUsuarios() {
         return usuarios;
     }
 
