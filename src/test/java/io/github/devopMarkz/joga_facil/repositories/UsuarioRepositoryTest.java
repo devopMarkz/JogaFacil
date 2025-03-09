@@ -53,4 +53,17 @@ class UsuarioRepositoryTest {
         assertNotNull(foundedUser);
         assertNotNull(foundedUser.getRoles());
     }
+
+    @Test
+    @DisplayName("Given Inexistent Person Email when SearchByEmail then Return NULL")
+    void givenInexistentPersonEmailwhenSearchByEmailthenReturnNull(){
+        // Arrange
+        String email = "inexistent@gmail.com";
+
+        // Act
+        Usuario foundedUser = usuarioRepository.searchByEmail(email).orElse(null);
+
+        // Assert
+        assertNull(foundedUser);
+    }
 }
