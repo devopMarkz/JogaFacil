@@ -1,6 +1,6 @@
 package io.github.devopMarkz.joga_facil.utils;
 
-import io.github.devopMarkz.joga_facil.ResourceNotFoundException;
+import io.github.devopMarkz.joga_facil.exceptions.ResourceNotFoundException;
 import io.github.devopMarkz.joga_facil.dtos.role.RoleDTO;
 import io.github.devopMarkz.joga_facil.dtos.usuario.UsuarioRequestDTO;
 import io.github.devopMarkz.joga_facil.dtos.usuario.UsuarioResponseDTO;
