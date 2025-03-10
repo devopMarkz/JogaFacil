@@ -37,6 +37,9 @@ public class Usuario implements UserDetails {
     @OneToMany(mappedBy = "organizador")
     private List<Partida> partidas = new ArrayList<>();
 
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ParticipantePartida> usuarioPartidas = new ArrayList<>();
+
     public Usuario() {
     }
 
@@ -105,6 +108,22 @@ public class Usuario implements UserDetails {
 
     public List<Partida> getPartidas() {
         return partidas;
+    }
+
+    public List<ParticipantePartida> getUsuarioPartidas() {
+        return usuarioPartidas;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    public void setPartidas(List<Partida> partidas) {
+        this.partidas = partidas;
+    }
+
+    public void setUsuarioPartidas(List<ParticipantePartida> usuarioPartidas) {
+        this.usuarioPartidas = usuarioPartidas;
     }
 
     @Override

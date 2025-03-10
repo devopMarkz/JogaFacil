@@ -38,7 +38,7 @@ class TokenServiceImplTest {
         authDTO = new AuthDTO("marcos@gmail.com", "123");
         usuario = new Usuario(1L, "Marcos", "marcos@gmail.com", "123", "98986063363");
         usuario.addRole(new Role(1, RoleEnum.ROLE_ORGANIZADOR));
-        token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJqb2dhLWZhY2lsLWFwaSIsInN1YiI6Im1hcmNvc0BnbWFpbC5jb20iLCJyb2xlcyI6WyJST0xFX09SR0FOSVpBRE9SIl0sImV4cCI6MTc0MTYyMzQyMH0.f80EpP2om1y45EivyjILN7nXjAoX0fI4f-_4sfmPDBs";
+        token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJqb2dhLWZhY2lsLWFwaSIsInN1YiI6Im1hcmNvc0BnbWFpbC5jb20iLCJyb2xlcyI6WyJST0xFX09SR0FOSVpBRE9SIl0sImV4cCI6MTc0MTY1MjY3NX0.cZaJLw-RjpF_8FcMy-SHzLARq1CcW_Sy7KRcRxRETsc";
     }
 
     @Test
