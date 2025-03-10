@@ -4,7 +4,6 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import io.github.devopMarkz.joga_facil.dtos.auth.AuthDTO;
-import io.github.devopMarkz.joga_facil.dtos.role.RoleDTO;
 import io.github.devopMarkz.joga_facil.exceptions.ResourceNotFoundException;
 import io.github.devopMarkz.joga_facil.model.Role;
 import io.github.devopMarkz.joga_facil.model.Usuario;
