@@ -2,8 +2,8 @@ package io.github.devopMarkz.joga_facil.controllers;
 
 import io.github.devopMarkz.joga_facil.dtos.auth.AuthDTO;
 import io.github.devopMarkz.joga_facil.dtos.token.TokenDTO;
+import io.github.devopMarkz.joga_facil.services.TokenService;
 import io.github.devopMarkz.joga_facil.services.impl.TokenServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
@@ -21,9 +20,9 @@ import java.time.ZoneId;
 public class AuthenticationController {
 
     private AuthenticationManager authenticationManager;
-    private TokenServiceImpl tokenService;
+    private TokenService tokenService;
 
-    public AuthenticationController(AuthenticationManager authenticationManager, TokenServiceImpl tokenService) {
+    public AuthenticationController(AuthenticationManager authenticationManager, TokenService tokenService) {
         this.authenticationManager = authenticationManager;
         this.tokenService = tokenService;
     }

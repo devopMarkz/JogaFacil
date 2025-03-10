@@ -8,6 +8,7 @@ import io.github.devopMarkz.joga_facil.exceptions.ResourceNotFoundException;
 import io.github.devopMarkz.joga_facil.model.Role;
 import io.github.devopMarkz.joga_facil.model.Usuario;
 import io.github.devopMarkz.joga_facil.repositories.UsuarioRepository;
+import io.github.devopMarkz.joga_facil.services.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,17 +17,19 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
-public class TokenServiceImpl {
+public class TokenServiceImpl implements TokenService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Override
     public String obterToken(AuthDTO authDTO){
         var usuario = usuarioRepository.searchByEmail(authDTO.login())
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário inexistente."));
         return gerarToken(usuario);
     }
 
+    @Override
     public String obterLogin(String token){
         try {
             Algorithm algorithm = Algorithm.HMAC256("secret");
@@ -40,6 +43,7 @@ public class TokenServiceImpl {
         }
     }
 
+    @Override
     public Instant obterTempoDeDuracao(String token){
         try {
             Algorithm algorithm = Algorithm.HMAC256("secret");
