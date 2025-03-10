@@ -4,10 +4,7 @@ import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "tb_usuario")
@@ -36,6 +33,9 @@ public class Usuario implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "id_role")
     )
     private Set<Role> roles = new HashSet<>();
+
+    @OneToMany(mappedBy = "organizador")
+    private List<Partida> partidas = new ArrayList<>();
 
     public Usuario() {
     }
@@ -101,6 +101,10 @@ public class Usuario implements UserDetails {
 
     public void addRole(Role role){
         roles.add(role);
+    }
+
+    public List<Partida> getPartidas() {
+        return partidas;
     }
 
     @Override
