@@ -40,6 +40,19 @@ public class TokenServiceImpl {
         }
     }
 
+    public Instant obterTempoDeDuracao(String token){
+        try {
+            Algorithm algorithm = Algorithm.HMAC256("secret");
+            return JWT.require(algorithm)
+                    .withIssuer("joga-facil-api")
+                    .build()
+                    .verify(token)
+                    .getExpiresAtAsInstant();
+        }catch (JWTCreationException e){
+            throw new RuntimeException(e);
+        }
+    }
+
     private String gerarToken(Usuario usuario){
         List<String> roles = usuario.getRoles().stream().map(Role::getAuthority).toList();
         try {
