@@ -2,6 +2,7 @@ package io.github.devopMarkz.joga_facil.controllers;
 
 import io.github.devopMarkz.joga_facil.dtos.usuario.UsuarioRequestDTO;
 import io.github.devopMarkz.joga_facil.dtos.usuario.UsuarioResponseDTO;
+import io.github.devopMarkz.joga_facil.dtos.usuario.UsuarioUpdateSenhaDTO;
 import io.github.devopMarkz.joga_facil.services.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,12 @@ public class UsuarioController {
         UsuarioResponseDTO usuarioResponseDTO = usuarioService.insert(usuarioRequestDTO);
         URI location = gerarURI(usuarioResponseDTO.id());
         return ResponseEntity.created(location).build();
+    }
+
+    @PutMapping
+    public ResponseEntity<Void> atualizarSenha(@Valid @RequestBody UsuarioUpdateSenhaDTO usuarioUpdateSenhaDTO){
+        usuarioService.updateSenha(usuarioUpdateSenhaDTO);
+        return ResponseEntity.noContent().build();
     }
 
 }

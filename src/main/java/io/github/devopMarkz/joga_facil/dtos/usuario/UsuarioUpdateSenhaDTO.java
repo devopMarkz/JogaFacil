@@ -9,6 +9,9 @@ public record UsuarioUpdateSenhaDTO(
         String email,
 
         @NotBlank(message = "Campo SENHA não pode estar nulo.")
-        String senha
+        String senha,
+
+        @NotBlank(message = "Campo SENHA não pode estar nulo.")
+        String novaSenha
 ) {
 }
