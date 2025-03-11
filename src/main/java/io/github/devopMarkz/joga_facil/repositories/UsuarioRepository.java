@@ -14,4 +14,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     @Query("SELECT obj FROM Usuario obj JOIN FETCH obj.roles WHERE obj.email = :email")
     Optional<Usuario> searchByEmail(@Param("email") String email);
 
+    boolean existsByEmail(String email);
+
 }

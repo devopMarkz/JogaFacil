@@ -3,11 +3,9 @@ package io.github.devopMarkz.joga_facil.controllers;
 import io.github.devopMarkz.joga_facil.dtos.usuario.UsuarioRequestDTO;
 import io.github.devopMarkz.joga_facil.dtos.usuario.UsuarioResponseDTO;
 import io.github.devopMarkz.joga_facil.services.UsuarioService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static io.github.devopMarkz.joga_facil.services.GenerateURIService.gerarURI;
 
@@ -24,9 +22,10 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> cadastrarUsuario(@RequestBody UsuarioRequestDTO usuarioRequestDTO){
+    public ResponseEntity<Void> cadastrarUsuario(@Valid @RequestBody UsuarioRequestDTO usuarioRequestDTO){
         UsuarioResponseDTO usuarioResponseDTO = usuarioService.insert(usuarioRequestDTO);
         URI location = gerarURI(usuarioResponseDTO.id());
         return ResponseEntity.created(location).build();
     }
+
 }

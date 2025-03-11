@@ -2,6 +2,7 @@ package io.github.devopMarkz.joga_facil.services.impl;
 
 import io.github.devopMarkz.joga_facil.dtos.usuario.UsuarioRequestDTO;
 import io.github.devopMarkz.joga_facil.dtos.usuario.UsuarioResponseDTO;
+import io.github.devopMarkz.joga_facil.exceptions.UsuarioJaExistenteException;
 import io.github.devopMarkz.joga_facil.model.Usuario;
 import io.github.devopMarkz.joga_facil.repositories.RoleRepository;
 import io.github.devopMarkz.joga_facil.repositories.UsuarioRepository;
@@ -26,8 +27,16 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Transactional
     @Override
     public UsuarioResponseDTO insert(UsuarioRequestDTO usuarioRequestDTO){
+        verificarExistenciaDoEmail(usuarioRequestDTO.email());
         Usuario usuario = usuarioMapper.toEntity(usuarioRequestDTO);
-        var usuarioSalvo = usuarioRepository.save(usuario);
-        return usuarioMapper.toDTO(usuario);
+        Usuario usuarioSalvo = usuarioRepository.save(usuario);
+        return usuarioMapper.toDTO(usuarioSalvo);
     }
+
+    private void verificarExistenciaDoEmail(String email){
+        if(usuarioRepository.existsByEmail(email)){
+            throw new UsuarioJaExistenteException("Já existe usuário com este e-mail.");
+        }
+    }
+
 }
