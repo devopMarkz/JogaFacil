@@ -37,6 +37,14 @@ public class Partida {
     public Partida() {
     }
 
+    public Partida(LocalDateTime dataHora, String local, Double custoTotal, Integer vagasDisponiveis, Usuario organizador) {
+        this.dataHora = dataHora;
+        this.local = local;
+        this.custoTotal = custoTotal;
+        this.vagasDisponiveis = vagasDisponiveis;
+        this.organizador = organizador;
+    }
+
     public Partida(Long id, LocalDateTime dataHora, String local, Double custoTotal, Integer vagasDisponiveis, Usuario organizador) {
         this.id = id;
         this.dataHora = dataHora;
