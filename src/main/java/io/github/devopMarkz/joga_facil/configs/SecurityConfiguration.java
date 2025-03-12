@@ -27,6 +27,7 @@ public class SecurityConfiguration {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers(HttpMethod.POST, "/usuario").permitAll();
+                    auth.requestMatchers(HttpMethod.PUT, "/usuario").permitAll();
                     auth.requestMatchers(HttpMethod.POST, "/auth/login").permitAll();
                     auth.anyRequest().authenticated();
                 })
