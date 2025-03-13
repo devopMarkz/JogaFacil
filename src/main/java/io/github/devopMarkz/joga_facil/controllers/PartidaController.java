@@ -3,6 +3,7 @@ package io.github.devopMarkz.joga_facil.controllers;
 import io.github.devopMarkz.joga_facil.dtos.partida.PartidaRequestDTO;
 import io.github.devopMarkz.joga_facil.dtos.partida.PartidaResponseDTO;
 import io.github.devopMarkz.joga_facil.services.impl.PartidaServiceImpl;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -37,8 +38,14 @@ public class PartidaController {
 
     @PostMapping
     @PreAuthorize("hasRole('ROLE_ORGANIZADOR')")
-    public ResponseEntity<PartidaResponseDTO> criarPartida(@RequestBody PartidaRequestDTO partidaRequestDTO){
+    public ResponseEntity<PartidaResponseDTO> criarPartida(@Valid @RequestBody PartidaRequestDTO partidaRequestDTO){
         PartidaResponseDTO partida = partidaService.insert(partidaRequestDTO);
         return ResponseEntity.created(gerarURI(partida.id())).body(partida);
+    }
+
+    @PutMapping
+    public ResponseEntity<Void> atualizarPartida(@Valid @RequestBody PartidaRequestDTO partidaRequestDTO){
+        partidaService.update(partidaRequestDTO);
+        return ResponseEntity.noContent().build();
     }
 }
