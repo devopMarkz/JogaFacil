@@ -13,10 +13,12 @@ import java.time.LocalDateTime;
 @Repository
 public interface PartidaRepository extends JpaRepository<Partida, Long> {
 
-    @Query("SELECT obj FROM Partida obj WHERE 1 = 1 " +
-            "AND (:id iS NULL OR obj.id = :id) " +
-            "AND (:dataMinima IS NULL or obj.dataHora >= :dataMinima) " +
-            "AND (:dataMaxima IS NULL or obj.dataHora <= :dataMaxima)")
+    @Query("""
+    SELECT obj FROM Partida obj
+    WHERE (:id IS NULL OR obj.id = :id)
+    AND (COALESCE(:dataMinima, obj.dataHora) = obj.dataHora OR obj.dataHora >= :dataMinima)
+    AND (COALESCE(:dataMaxima, obj.dataHora) = obj.dataHora OR obj.dataHora <= :dataMaxima)
+    """)
     Page<Partida> searchByFilters(@Param("id") Long id,
                          @Param("dataMinima") LocalDateTime dataMinima,
                          @Param("dataMaxima") LocalDateTime dataMaxima,
