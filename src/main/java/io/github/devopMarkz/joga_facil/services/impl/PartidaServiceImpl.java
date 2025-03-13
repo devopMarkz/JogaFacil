@@ -2,6 +2,7 @@ package io.github.devopMarkz.joga_facil.services.impl;
 
 import io.github.devopMarkz.joga_facil.dtos.partida.PartidaRequestDTO;
 import io.github.devopMarkz.joga_facil.dtos.partida.PartidaResponseDTO;
+import io.github.devopMarkz.joga_facil.exceptions.ResourceNotFoundException;
 import io.github.devopMarkz.joga_facil.model.Partida;
 import io.github.devopMarkz.joga_facil.model.Usuario;
 import io.github.devopMarkz.joga_facil.repositories.PartidaRepository;
@@ -45,6 +46,14 @@ public class PartidaServiceImpl {
         Page<Partida> partidas = partidaRepository.searchByFilters(id, dataHoraMinima, dataHoraMaxima, pageable);
 
         return partidas.map(partida -> partidaMapper.toDTO(partida));
+    }
+
+    @Transactional
+    public void update(PartidaRequestDTO partidaRequestDTO){
+        Partida partida = partidaRepository.findById(partidaRequestDTO.id())
+                .orElseThrow(() -> new ResourceNotFoundException("Partida inexistente."));
+        partidaMapper.toEntityUpdated(partidaRequestDTO, partida);
+        partidaRepository.save(partida);
     }
 
 }
