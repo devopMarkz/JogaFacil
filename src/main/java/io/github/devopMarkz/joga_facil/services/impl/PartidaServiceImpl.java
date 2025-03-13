@@ -7,11 +7,12 @@ import io.github.devopMarkz.joga_facil.model.Usuario;
 import io.github.devopMarkz.joga_facil.repositories.PartidaRepository;
 import io.github.devopMarkz.joga_facil.utils.ObterUsuarioLogado;
 import io.github.devopMarkz.joga_facil.utils.PartidaMapper;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Service
 public class PartidaServiceImpl {
@@ -34,10 +35,16 @@ public class PartidaServiceImpl {
         return partidaMapper.toDTO(novaPartida);
     }
 
-    @Transactional
-    public Page<PartidaResponseDTO> findAll(Integer pageNumber, Integer pageSize){
+    @Transactional(readOnly = true)
+    public Page<PartidaResponseDTO> findByFilters(Long id, LocalDate dataMinima, LocalDate dataMaxima, Integer pageNumber, Integer pageSize){
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        Page<Partida> partidas = partidaRepository.findAll(pageable);
+
+        LocalDateTime dataHoraMinima = (dataMinima == null)? LocalDateTime.now() : dataMinima.atStartOfDay();
+        LocalDateTime dataHoraMaxima = (dataMaxima == null)? null : dataMaxima.atStartOfDay();
+
+        Page<Partida> partidas = partidaRepository.searchByFilters(id, dataHoraMinima, dataHoraMaxima, pageable);
+
         return partidas.map(partida -> partidaMapper.toDTO(partida));
     }
+
 }
