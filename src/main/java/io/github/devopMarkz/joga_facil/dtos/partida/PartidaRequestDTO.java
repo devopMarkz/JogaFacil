@@ -7,6 +7,10 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 public record PartidaRequestDTO(
+        @NotNull(message = "O id é obrigatório.")
+        @Min(value = 1, message = "O valor mínimo para ID é 1.")
+        Long id,
+
         @NotNull(message = "A data e hora da partida são obrigatórias.")
         @Future(message = "A data da partida deve ser no futuro.")
         LocalDateTime dataHora,

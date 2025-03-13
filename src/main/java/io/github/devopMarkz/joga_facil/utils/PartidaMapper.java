@@ -49,4 +49,13 @@ public class PartidaMapper {
                 participantesDTO
         );
     }
+
+    public Partida toEntityUpdated(PartidaRequestDTO dto, Partida partida){
+        partida.setDataHora(dto.dataHora() == null? partida.getDataHora() : dto.dataHora());
+        partida.setLocal(dto.local() == null? partida.getLocal() : dto.local());
+        partida.setCustoTotal(dto.custoTotal() == null? partida.getCustoTotal() : dto.custoTotal());
+        partida.setVagasDisponiveis(dto.vagasDisponiveis() == null? partida.getVagasDisponiveis() : dto.vagasDisponiveis());
+        return partida;
+    }
+
 }
