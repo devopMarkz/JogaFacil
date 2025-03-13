@@ -8,6 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import static io.github.devopMarkz.joga_facil.services.GenerateURIService.*;
 
 @RestController
@@ -21,11 +24,14 @@ public class PartidaController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<PartidaResponseDTO>> obterPartidas(
+    public ResponseEntity<Page<PartidaResponseDTO>> obterPartidasPorFiltros(
             @RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber,
-            @RequestParam(name = "pageSize", defaultValue = "10") int pageSize
-    ){
-        Page<PartidaResponseDTO> partidas = partidaService.findAll(pageNumber, pageSize);
+            @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
+            @RequestParam(name = "id", required = false) Long id,
+            @RequestParam(name = "dataMinima", required = false) LocalDate dataMinima,
+            @RequestParam(name = "dataMaxima", required = false) LocalDate dataMaxima
+            ){
+        Page<PartidaResponseDTO> partidas = partidaService.findByFilters(id, dataMinima, dataMaxima, pageNumber, pageSize);
         return ResponseEntity.ok(partidas);
     }
 
