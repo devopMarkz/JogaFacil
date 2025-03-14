@@ -6,6 +6,7 @@ import io.github.devopMarkz.joga_facil.exceptions.ResourceNotFoundException;
 import io.github.devopMarkz.joga_facil.model.Partida;
 import io.github.devopMarkz.joga_facil.model.Usuario;
 import io.github.devopMarkz.joga_facil.repositories.PartidaRepository;
+import io.github.devopMarkz.joga_facil.services.PartidaService;
 import io.github.devopMarkz.joga_facil.utils.ObterUsuarioLogado;
 import io.github.devopMarkz.joga_facil.utils.PartidaMapper;
 import org.springframework.data.domain.*;
@@ -16,7 +17,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Service
-public class PartidaServiceImpl {
+public class PartidaServiceImpl implements PartidaService {
 
     private PartidaRepository partidaRepository;
     private ObterUsuarioLogado obterUsuarioLogado;
@@ -28,6 +29,7 @@ public class PartidaServiceImpl {
         this.partidaMapper = partidaMapper;
     }
 
+    @Override
     @Transactional
     public PartidaResponseDTO insert(PartidaRequestDTO partidaRequestDTO){
         Usuario organizador = obterUsuarioLogado.obterUsuario();
@@ -36,6 +38,7 @@ public class PartidaServiceImpl {
         return partidaMapper.toDTO(novaPartida);
     }
 
+    @Override
     @Transactional(readOnly = true)
     public Page<PartidaResponseDTO> findByFilters(Long id, LocalDate dataMinima, LocalDate dataMaxima, Integer pageNumber, Integer pageSize){
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
@@ -48,6 +51,7 @@ public class PartidaServiceImpl {
         return partidas.map(partida -> partidaMapper.toDTO(partida));
     }
 
+    @Override
     @Transactional
     public void update(PartidaRequestDTO partidaRequestDTO){
         Partida partida = partidaRepository.findById(partidaRequestDTO.id())
