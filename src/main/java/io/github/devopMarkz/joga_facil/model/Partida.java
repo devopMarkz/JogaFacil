@@ -15,8 +15,11 @@ public class Partida {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "data_hora", nullable = false)
-    private LocalDateTime dataHora;
+    @Column(name = "data_hora_inicio", nullable = false)
+    private LocalDateTime dataHoraInicio;
+
+    @Column(name = "data_hora_fim", nullable = false)
+    private LocalDateTime dataHoraFim;
 
     @Column(name = "local", nullable = false, columnDefinition = "TEXT")
     private String local;
@@ -37,17 +40,19 @@ public class Partida {
     public Partida() {
     }
 
-    public Partida(LocalDateTime dataHora, String local, Double custoTotal, Integer vagasDisponiveis, Usuario organizador) {
-        this.dataHora = dataHora;
+    public Partida(LocalDateTime dataHoraInicio, LocalDateTime dataHoraFim, String local, Double custoTotal, Integer vagasDisponiveis, Usuario organizador) {
+        this.dataHoraInicio = dataHoraInicio;
+        this.dataHoraFim = dataHoraFim;
         this.local = local;
         this.custoTotal = custoTotal;
         this.vagasDisponiveis = vagasDisponiveis;
         this.organizador = organizador;
     }
 
-    public Partida(Long id, LocalDateTime dataHora, String local, Double custoTotal, Integer vagasDisponiveis, Usuario organizador) {
+    public Partida(Long id, LocalDateTime dataHoraInicio, LocalDateTime dataHoraFim, String local, Double custoTotal, Integer vagasDisponiveis, Usuario organizador) {
         this.id = id;
-        this.dataHora = dataHora;
+        this.dataHoraInicio = dataHoraInicio;
+        this.dataHoraFim = dataHoraFim;
         this.local = local;
         this.custoTotal = custoTotal;
         this.vagasDisponiveis = vagasDisponiveis;
@@ -62,12 +67,20 @@ public class Partida {
         this.id = id;
     }
 
-    public LocalDateTime getDataHora() {
-        return dataHora;
+    public LocalDateTime getDataHoraInicio() {
+        return dataHoraInicio;
     }
 
-    public void setDataHora(LocalDateTime dataHora) {
-        this.dataHora = dataHora;
+    public void setDataHoraInicio(LocalDateTime dataHoraInicio) {
+        this.dataHoraInicio = dataHoraInicio;
+    }
+
+    public LocalDateTime getDataHoraFim() {
+        return dataHoraFim;
+    }
+
+    public void setDataHoraFim(LocalDateTime dataHoraFim) {
+        this.dataHoraFim = dataHoraFim;
     }
 
     public String getLocal() {
