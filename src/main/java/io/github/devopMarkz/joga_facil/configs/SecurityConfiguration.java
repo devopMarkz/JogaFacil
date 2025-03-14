@@ -35,7 +35,7 @@ public class SecurityConfiguration {
                     auth.requestMatchers(HttpMethod.POST, "/usuario").permitAll();
                     auth.requestMatchers(HttpMethod.PUT, "/usuario").permitAll();
                     auth.requestMatchers(HttpMethod.POST, "/auth/login").permitAll();
-                    auth.requestMatchers(HttpMethod.GET, "/actuator/**").permitAll();
+                    auth.requestMatchers(HttpMethod.GET, "/actuator/**").hasAuthority("ROLE_ADMINISTRADOR");
                     auth.anyRequest().authenticated();
                 })
                 .addFilterBefore(customAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
