@@ -15,7 +15,8 @@ public class PartidaMapper {
 
     public Partida toEntity(PartidaRequestDTO dto, Usuario organizador) {
         return new Partida(
-                dto.dataHora(),
+                dto.dataHoraInicio(),
+                dto.dataHoraFim(),
                 dto.local(),
                 dto.custoTotal(),
                 dto.vagasDisponiveis(),
@@ -41,7 +42,8 @@ public class PartidaMapper {
 
         return new PartidaResponseDTO(
                 partida.getId(),
-                partida.getDataHora(),
+                partida.getDataHoraInicio(),
+                partida.getDataHoraFim(),
                 partida.getLocal(),
                 partida.getCustoTotal(),
                 partida.getVagasDisponiveis(),
@@ -51,7 +53,8 @@ public class PartidaMapper {
     }
 
     public Partida toEntityUpdated(PartidaRequestDTO dto, Partida partida){
-        partida.setDataHora(dto.dataHora() == null? partida.getDataHora() : dto.dataHora());
+        partida.setDataHoraInicio(dto.dataHoraInicio() == null? partida.getDataHoraInicio() : dto.dataHoraInicio());
+        partida.setDataHoraFim(dto.dataHoraFim() == null? partida.getDataHoraFim() : dto.dataHoraFim());
         partida.setLocal(dto.local() == null? partida.getLocal() : dto.local());
         partida.setCustoTotal(dto.custoTotal() == null? partida.getCustoTotal() : dto.custoTotal());
         partida.setVagasDisponiveis(dto.vagasDisponiveis() == null? partida.getVagasDisponiveis() : dto.vagasDisponiveis());

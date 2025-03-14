@@ -16,9 +16,9 @@ public interface PartidaRepository extends JpaRepository<Partida, Long> {
     @Query("""
     SELECT obj FROM Partida obj
     WHERE (:id IS NULL OR obj.id = :id)
-    AND (COALESCE(:dataMinima, obj.dataHora) = obj.dataHora OR obj.dataHora >= :dataMinima)
-    AND (COALESCE(:dataMaxima, obj.dataHora) = obj.dataHora OR obj.dataHora <= :dataMaxima)
-    ORDER BY obj.dataHora
+    AND (COALESCE(:dataMinima, obj.dataHoraInicio) = obj.dataHoraInicio OR obj.dataHoraInicio >= :dataMinima)
+    AND (COALESCE(:dataMaxima, obj.dataHoraInicio) = obj.dataHoraInicio OR obj.dataHoraInicio <= :dataMaxima)
+    ORDER BY obj.dataHoraInicio
     """)
     Page<Partida> searchByFilters(@Param("id") Long id,
                          @Param("dataMinima") LocalDateTime dataMinima,

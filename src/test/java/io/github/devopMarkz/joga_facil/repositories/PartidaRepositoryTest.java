@@ -31,7 +31,7 @@ class PartidaRepositoryTest {
     @BeforeEach
     void setup(){
         usuario = new Usuario("Marcos", "marcos@gmail.com", "123", "98986765435");
-        partida = new Partida(LocalDateTime.now(), "Parque Timbiras", 200.0, 18, usuario);
+        partida = new Partida(LocalDateTime.now(), LocalDateTime.now().plusHours(2), "Parque Timbiras", 200.0, 18, usuario);
         usuario = usuarioRepository.save(usuario);
         partida = partidaRepository.save(partida);
     }
