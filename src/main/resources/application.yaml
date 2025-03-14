@@ -3,3 +3,9 @@ spring:
     name: joga-facil
   profiles:
     active: ${PROFILE:test}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
