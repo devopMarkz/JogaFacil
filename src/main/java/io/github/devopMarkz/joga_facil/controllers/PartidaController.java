@@ -3,7 +3,6 @@ package io.github.devopMarkz.joga_facil.controllers;
 import io.github.devopMarkz.joga_facil.dtos.partida.PartidaRequestDTO;
 import io.github.devopMarkz.joga_facil.dtos.partida.PartidaResponseDTO;
 import io.github.devopMarkz.joga_facil.services.PartidaService;
-import io.github.devopMarkz.joga_facil.services.impl.PartidaServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -11,9 +10,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
-import static io.github.devopMarkz.joga_facil.services.GenerateURIService.*;
+import static io.github.devopMarkz.joga_facil.services.GenerateURIService.gerarURI;
 
 @RestController
 @RequestMapping("/partidas")
