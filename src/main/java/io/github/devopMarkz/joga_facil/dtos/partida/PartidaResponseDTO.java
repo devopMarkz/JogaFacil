@@ -7,7 +7,8 @@ import java.util.List;
 
 public record PartidaResponseDTO(
         Long id,
-        LocalDateTime dataHora,
+        LocalDateTime dataHoraInicio,
+        LocalDateTime dataHoraFim,
         String local,
         Double custoTotal,
         Integer vagasDisponiveis,
