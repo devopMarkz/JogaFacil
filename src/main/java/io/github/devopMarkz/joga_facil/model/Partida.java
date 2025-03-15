@@ -123,6 +123,10 @@ public class Partida {
         this.participantes = participantes;
     }
 
+    public void atualizarVagasDisponiveis(){
+        this.vagasDisponiveis -= 1;
+    }
+
     @Override
     public boolean equals(Object object) {
         if (this == object) return true;
