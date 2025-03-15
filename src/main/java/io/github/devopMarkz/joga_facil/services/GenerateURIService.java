@@ -14,4 +14,11 @@ public interface GenerateURIService {
                 .toUri();
     }
 
+    static <T, W> URI gerarURIDeChaveComposta(T email, W partidaId){
+        return ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{email}/{partidaId}")
+                .buildAndExpand(email, partidaId)
+                .toUri();
+    }
+
 }
