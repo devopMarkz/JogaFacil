@@ -36,7 +36,7 @@ public class PartidaMapper {
                         participante.getUsuario().getNome(),
                         participante.getUsuario().getEmail(),
                         participante.getUsuario().getTelefone(),
-                        participante.getStatusPagamento(),
+                        participante.getStatusPagamento().name(),
                         participante.getConfirmacaoPresenca()
                 )).toList();
 

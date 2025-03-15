@@ -1,5 +1,6 @@
 package io.github.devopMarkz.joga_facil.model;
 
+import io.github.devopMarkz.joga_facil.model.enums.StatusPagamento;
 import jakarta.persistence.*;
 
 import java.util.Objects;
@@ -22,17 +23,32 @@ public class ParticipantePartida {
     private Partida partida;
 
     @Column(name = "status_pagamento")
-    private String statusPagamento; // Ex: "PENDENTE" ou "PAGO"
+    @Enumerated(EnumType.STRING)
+    private StatusPagamento statusPagamento = StatusPagamento.PENDENTE; // Ex: "PENDENTE" ou "PAGO"
 
     @Column(name = "confirmacao_presenca")
-    private Boolean confirmacaoPresenca;
+    private Boolean confirmacaoPresenca = false;
 
     public ParticipantePartida() {
     }
 
-    public ParticipantePartida(Usuario usuario, Partida partida, String statusPagamento, Boolean confirmacaoPresenca) {
-        participantePartidaId.setUsuarioId(usuario.getId());
-        participantePartidaId.setPartidaId(partida.getId());
+    public ParticipantePartida(Usuario usuario, Partida partida) {
+        this.usuario = usuario;
+        this.partida = partida;
+    }
+
+    public ParticipantePartida(Partida partida, Boolean confirmacaoPresenca) {
+        this.partida = partida;
+        this.confirmacaoPresenca = confirmacaoPresenca;
+    }
+
+    public ParticipantePartida(Usuario usuario, Partida partida, Boolean confirmacaoPresenca) {
+        this.usuario = usuario;
+        this.partida = partida;
+        this.confirmacaoPresenca = confirmacaoPresenca;
+    }
+
+    public ParticipantePartida(Usuario usuario, Partida partida, StatusPagamento statusPagamento, Boolean confirmacaoPresenca) {
         this.usuario = usuario;
         this.partida = partida;
         this.statusPagamento = statusPagamento;
@@ -63,11 +79,11 @@ public class ParticipantePartida {
         this.partida = partida;
     }
 
-    public String getStatusPagamento() {
+    public StatusPagamento getStatusPagamento() {
         return statusPagamento;
     }
 
-    public void setStatusPagamento(String statusPagamento) {
+    public void setStatusPagamento(StatusPagamento statusPagamento) {
         this.statusPagamento = statusPagamento;
     }
 
