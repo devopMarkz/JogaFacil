@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Repository
 public interface PartidaRepository extends JpaRepository<Partida, Long> {
@@ -25,5 +26,8 @@ public interface PartidaRepository extends JpaRepository<Partida, Long> {
                          @Param("dataMaxima") LocalDateTime dataMaxima,
                          Pageable pageable
     );
+
+    @Query("SELECT p FROM Partida p LEFT JOIN FETCH p.participantes WHERE p.id = :partidaId")
+    Optional<Partida> searchPartidaByIdWithParticipantes(@Param("partidaId") Long partidaId);
 
 }

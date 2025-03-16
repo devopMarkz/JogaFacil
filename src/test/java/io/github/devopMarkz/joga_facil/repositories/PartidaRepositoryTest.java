@@ -52,4 +52,10 @@ class PartidaRepositoryTest {
         assertNotNull(partidaEncontrada);
         assertEquals("Parque Timbiras", otherPartida.getLocal());
     }
+
+    @Test
+    void searchPartidaByIdWithParticipantes() {
+        Partida partida1 = partidaRepository.searchPartidaByIdWithParticipantes(1L).get();
+        assertNotNull(partida1);
+    }
 }
