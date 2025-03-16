@@ -37,6 +37,7 @@ public class ParticipantePartidaMapper {
                 participante.getNome(),
                 participante.getEmail(),
                 participante.getTelefone(),
+                participantePartida.getValorPagamento(),
                 participantePartida.getStatusPagamento().name(),
                 participantePartida.getConfirmacaoPresenca()
         );

@@ -22,6 +22,9 @@ public class ParticipantePartida {
     @JoinColumn(name = "partida_id")
     private Partida partida;
 
+    @Column(name = "valor_pagamento")
+    private Double valorPagamento = 0.0;
+
     @Column(name = "status_pagamento")
     @Enumerated(EnumType.STRING)
     private StatusPagamento statusPagamento = StatusPagamento.PENDENTE; // Ex: "PENDENTE" ou "PAGO"
@@ -55,6 +58,15 @@ public class ParticipantePartida {
         this.confirmacaoPresenca = confirmacaoPresenca;
     }
 
+    public ParticipantePartida(ParticipantePartidaId participantePartidaId, Usuario usuario, Partida partida, Double valorPagamento, StatusPagamento statusPagamento, Boolean confirmacaoPresenca) {
+        this.participantePartidaId = participantePartidaId;
+        this.usuario = usuario;
+        this.partida = partida;
+        this.valorPagamento = valorPagamento;
+        this.statusPagamento = statusPagamento;
+        this.confirmacaoPresenca = confirmacaoPresenca;
+    }
+
     public ParticipantePartidaId getParticipantePartidaId() {
         return participantePartidaId;
     }
@@ -77,6 +89,14 @@ public class ParticipantePartida {
 
     public void setPartida(Partida partida) {
         this.partida = partida;
+    }
+
+    public Double getValorPagamento() {
+        return valorPagamento;
+    }
+
+    public void setValorPagamento(Double valorPagamento) {
+        this.valorPagamento = valorPagamento;
     }
 
     public StatusPagamento getStatusPagamento() {
