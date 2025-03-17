@@ -7,6 +7,7 @@ import io.github.devopMarkz.joga_facil.model.Partida;
 import io.github.devopMarkz.joga_facil.model.Usuario;
 import io.github.devopMarkz.joga_facil.repositories.PartidaRepository;
 import io.github.devopMarkz.joga_facil.services.PartidaService;
+import io.github.devopMarkz.joga_facil.services.exceptions.OrganizadorInvalidoException;
 import io.github.devopMarkz.joga_facil.utils.ObterUsuarioLogado;
 import io.github.devopMarkz.joga_facil.utils.PartidaMapper;
 import org.springframework.data.domain.*;
@@ -56,7 +57,15 @@ public class PartidaServiceImpl implements PartidaService {
     public void update(PartidaRequestDTO partidaRequestDTO){
         Partida partida = partidaRepository.findById(partidaRequestDTO.id())
                 .orElseThrow(() -> new ResourceNotFoundException("Partida inexistente."));
+
+        Usuario usuario = obterUsuarioLogado.obterUsuario();
+
+        if(!partida.getOrganizador().equals(usuario)){
+            throw new OrganizadorInvalidoException(usuario.getEmail() + " não é o organizador desta partida.");
+        }
+
         partidaMapper.toEntityUpdated(partidaRequestDTO, partida);
+
         partidaRepository.save(partida);
     }
 

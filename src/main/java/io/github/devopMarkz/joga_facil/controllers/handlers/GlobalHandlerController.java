@@ -5,9 +5,11 @@ import io.github.devopMarkz.joga_facil.dtos.erro.ErroResponseDTO;
 import io.github.devopMarkz.joga_facil.exceptions.SenhaIncorretaException;
 import io.github.devopMarkz.joga_facil.exceptions.UsuarioJaExistenteException;
 import io.github.devopMarkz.joga_facil.services.exceptions.LimiteDeParticipantesAtingidoException;
+import io.github.devopMarkz.joga_facil.services.exceptions.OrganizadorInvalidoException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -50,10 +52,26 @@ public class GlobalHandlerController {
         return ResponseEntity.status(status).body(erroResponseDTO);
     }
 
+    @ExceptionHandler(OrganizadorInvalidoException.class)
+    public ResponseEntity<ErroResponseDTO> organizadorInvalidoException(OrganizadorInvalidoException e, HttpServletRequest request){
+        HttpStatus status = HttpStatus.UNAUTHORIZED;
+        List<String> errors = List.of(e.getMessage());
+        ErroResponseDTO erroResponseDTO = new ErroResponseDTO(Instant.now(), status.value(), request.getRequestURI(), errors);
+        return ResponseEntity.status(status).body(erroResponseDTO);
+    }
+
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<ErroResponseDTO> methodArgumentTypeMismatch(MethodArgumentTypeMismatchException e, HttpServletRequest request){
         HttpStatus status = HttpStatus.BAD_REQUEST;
-        List<String> errors = List.of(e.getMessage());
+        List<String> errors = List.of("Entrada de dados incorreta.");
+        ErroResponseDTO erroResponseDTO = new ErroResponseDTO(Instant.now(), status.value(), request.getRequestURI(), errors);
+        return ResponseEntity.status(status).body(erroResponseDTO);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErroResponseDTO> httpMessageNotReadableException(HttpMessageNotReadableException e, HttpServletRequest request){
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        List<String> errors = List.of("Corpo da requisição inválido.");
         ErroResponseDTO erroResponseDTO = new ErroResponseDTO(Instant.now(), status.value(), request.getRequestURI(), errors);
         return ResponseEntity.status(status).body(erroResponseDTO);
     }
