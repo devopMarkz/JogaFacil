@@ -31,7 +31,7 @@ public class ParticipantePartidaServiceImpl {
 
     @Transactional
     public ParticipantePartidaResponseDTO insert(Long partidaId){
-        Partida partida = partidaRepository.findById(partidaId)
+        Partida partida = partidaRepository.searchPartidaByIdWithParticipantes(partidaId)
                 .orElseThrow(() -> new ResourceNotFoundException("Partida não encontrada."));
 
         long quantidadeDeParticipantes = participantePartidaRepository.countParticipantesByPartidaId(partidaId);
@@ -44,11 +44,21 @@ public class ParticipantePartidaServiceImpl {
 
         ParticipantePartida participantePartida = new ParticipantePartida(participante, partida);
 
-        ParticipantePartida novaPartida = participantePartidaRepository.save(participantePartida);
+        partida.getParticipantes().add(participantePartida);
 
         partida.atualizarVagasDisponiveis();
 
-        return participantePartidaMapper.toDTO(novaPartida);
+        atualizarValorAPagar(partida);
+
+        Partida partidaAtualizada = partidaRepository.save(partida);
+
+        return participantePartidaMapper.toDTO(partida.getParticipantes().getLast());
+    }
+
+    private void atualizarValorAPagar(Partida partida){
+        double valorTotal = partida.getCustoTotal();
+        double valorAPagar = partida.getParticipantes().isEmpty()? valorTotal : valorTotal / partida.getParticipantes().size();
+        partida.getParticipantes().forEach(participantePartida -> participantePartida.setValorPagamento(valorAPagar));
     }
 
 }
