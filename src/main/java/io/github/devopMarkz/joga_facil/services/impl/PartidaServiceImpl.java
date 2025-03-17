@@ -5,6 +5,7 @@ import io.github.devopMarkz.joga_facil.dtos.partida.PartidaResponseDTO;
 import io.github.devopMarkz.joga_facil.exceptions.ResourceNotFoundException;
 import io.github.devopMarkz.joga_facil.model.Partida;
 import io.github.devopMarkz.joga_facil.model.Usuario;
+import io.github.devopMarkz.joga_facil.repositories.ParticipantePartidaRepository;
 import io.github.devopMarkz.joga_facil.repositories.PartidaRepository;
 import io.github.devopMarkz.joga_facil.services.PartidaService;
 import io.github.devopMarkz.joga_facil.services.exceptions.OrganizadorInvalidoException;
@@ -23,11 +24,13 @@ public class PartidaServiceImpl implements PartidaService {
     private PartidaRepository partidaRepository;
     private ObterUsuarioLogado obterUsuarioLogado;
     private PartidaMapper partidaMapper;
+    private ParticipantePartidaRepository participantePartidaRepository;
 
-    public PartidaServiceImpl(PartidaRepository partidaRepository, ObterUsuarioLogado obterUsuarioLogado, PartidaMapper partidaMapper) {
+    public PartidaServiceImpl(PartidaRepository partidaRepository, ObterUsuarioLogado obterUsuarioLogado, PartidaMapper partidaMapper, ParticipantePartidaRepository participantePartidaRepository) {
         this.partidaRepository = partidaRepository;
         this.obterUsuarioLogado = obterUsuarioLogado;
         this.partidaMapper = partidaMapper;
+        this.participantePartidaRepository = participantePartidaRepository;
     }
 
     @Override
@@ -65,6 +68,12 @@ public class PartidaServiceImpl implements PartidaService {
         }
 
         partidaMapper.toEntityUpdated(partidaRequestDTO, partida);
+
+        Integer quantidadeDeVagas = partida.getVagasDisponiveis();
+        Long quantidadeDeParticipantes = participantePartidaRepository.countParticipantesByPartidaId(partida.getId());
+        Integer vagasDisponiveis = quantidadeDeVagas - quantidadeDeParticipantes.intValue();
+
+        partida.setVagasDisponiveis(vagasDisponiveis);
 
         partidaRepository.save(partida);
     }
