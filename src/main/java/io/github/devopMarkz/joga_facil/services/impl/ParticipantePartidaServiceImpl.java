@@ -55,6 +55,14 @@ public class ParticipantePartidaServiceImpl {
         return participantePartidaMapper.toDTO(partida.getParticipantes().getLast());
     }
 
+    @Transactional
+    public void deleteParticipanteByPartidaId(Long participanteId, Long partidaId){
+        Partida partida = partidaRepository.findById(partidaId)
+                .orElseThrow(() -> new ResourceNotFoundException("Partida inexistente."));
+
+
+    }
+
     private void atualizarValorAPagar(Partida partida){
         double valorTotal = partida.getCustoTotal();
         double valorAPagar = partida.getParticipantes().isEmpty()? valorTotal : valorTotal / partida.getParticipantes().size();

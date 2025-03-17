@@ -3,12 +3,14 @@ package io.github.devopMarkz.joga_facil.services.impl;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import io.github.devopMarkz.joga_facil.dtos.auth.AuthDTO;
 import io.github.devopMarkz.joga_facil.exceptions.ResourceNotFoundException;
 import io.github.devopMarkz.joga_facil.model.Role;
 import io.github.devopMarkz.joga_facil.model.Usuario;
 import io.github.devopMarkz.joga_facil.repositories.UsuarioRepository;
 import io.github.devopMarkz.joga_facil.services.TokenService;
+import io.github.devopMarkz.joga_facil.services.exceptions.TokenExpiradoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +42,8 @@ public class TokenServiceImpl implements TokenService {
                     .getSubject();
         }catch (JWTCreationException e){
             throw new RuntimeException(e);
+        }catch (TokenExpiredException e){
+            throw new TokenExpiradoException("Token expirado.");
         }
     }
 

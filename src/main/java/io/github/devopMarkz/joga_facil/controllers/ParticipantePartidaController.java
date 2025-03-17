@@ -4,10 +4,8 @@ import io.github.devopMarkz.joga_facil.dtos.participantepartida.ParticipantePart
 import io.github.devopMarkz.joga_facil.services.impl.ParticipantePartidaServiceImpl;
 import io.github.devopMarkz.joga_facil.utils.ObterUsuarioLogado;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import static io.github.devopMarkz.joga_facil.services.GenerateURIService.*;
 
@@ -27,6 +25,13 @@ public class ParticipantePartidaController {
     public ResponseEntity<ParticipantePartidaResponseDTO> inscreverParticipante(@PathVariable Long partidaId){
         ParticipantePartidaResponseDTO participantePartidaResponseDTO = partidaService.insert(partidaId);
         return ResponseEntity.created(gerarURI(obterUsuarioLogado.obterUsuario().getEmail())).body(participantePartidaResponseDTO);
+    }
+
+    @DeleteMapping("/{participanteId}/{partidaId}")
+    @PreAuthorize("hasRole('ROLE_ORGANIZADOR')")
+    public ResponseEntity<Void> deletarParticipante(@PathVariable("participanteId") Long participanteId, @PathVariable("partidaId") Long partidaId){
+
+        return null;
     }
 
 }
