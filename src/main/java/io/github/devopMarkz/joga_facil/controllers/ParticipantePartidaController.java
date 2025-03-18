@@ -13,16 +13,16 @@ import static io.github.devopMarkz.joga_facil.services.GenerateURIService.*;
 @RequestMapping("/participantes-partida")
 public class ParticipantePartidaController {
 
-    private ParticipantePartidaServiceImpl partidaService;
-    private ObterUsuarioLogado obterUsuarioLogado;
+    private final ParticipantePartidaServiceImpl partidaService;
+    private final ObterUsuarioLogado obterUsuarioLogado;
 
     public ParticipantePartidaController(ParticipantePartidaServiceImpl partidaService, ObterUsuarioLogado obterUsuarioLogado) {
         this.partidaService = partidaService;
         this.obterUsuarioLogado = obterUsuarioLogado;
     }
 
-    @PostMapping("/inscrever/{partidaId}")
-    public ResponseEntity<ParticipantePartidaResponseDTO> inscreverParticipante(@PathVariable Long partidaId){
+    @PostMapping("/{partidaId}/inscrever")
+    public ResponseEntity<ParticipantePartidaResponseDTO> inscreverParticipante(@PathVariable("partidaId") Long partidaId){
         ParticipantePartidaResponseDTO participantePartidaResponseDTO = partidaService.insert(partidaId);
         return ResponseEntity.created(gerarURI(obterUsuarioLogado.obterUsuario().getEmail())).body(participantePartidaResponseDTO);
     }
@@ -31,6 +31,14 @@ public class ParticipantePartidaController {
     @PreAuthorize("hasRole('ROLE_ORGANIZADOR')")
     public ResponseEntity<Void> deletarParticipante(@PathVariable("participanteEmail") String participanteEmail, @PathVariable("partidaId") Long partidaId){
         partidaService.deleteParticipanteByPartidaId(participanteEmail, partidaId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{partidaId}/participantes/{participanteEmail}/confirmar-pagamento")
+    @PreAuthorize("hasRole('ROLE_ORGANIZADOR')")
+    public ResponseEntity<Void> atualizarPagamentoDeParticipante(@PathVariable("partidaId") Long partidaId,
+                                                                 @PathVariable("participanteEmail") String participanteEmail){
+        partidaService.updatePagamentoParcicipante(partidaId, participanteEmail);
         return ResponseEntity.noContent().build();
     }
 

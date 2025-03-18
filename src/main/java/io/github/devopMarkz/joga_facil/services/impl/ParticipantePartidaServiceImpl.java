@@ -6,6 +6,7 @@ import io.github.devopMarkz.joga_facil.model.ParticipantePartida;
 import io.github.devopMarkz.joga_facil.model.ParticipantePartidaId;
 import io.github.devopMarkz.joga_facil.model.Partida;
 import io.github.devopMarkz.joga_facil.model.Usuario;
+import io.github.devopMarkz.joga_facil.model.enums.StatusPagamento;
 import io.github.devopMarkz.joga_facil.repositories.ParticipantePartidaRepository;
 import io.github.devopMarkz.joga_facil.repositories.PartidaRepository;
 import io.github.devopMarkz.joga_facil.repositories.UsuarioRepository;
@@ -85,6 +86,21 @@ public class ParticipantePartidaServiceImpl {
 
         partida.adicionarVagasDisponiveis();
         partida.atualizarValorAPagar();
+
+        partidaRepository.save(partida);
+    }
+
+    @Transactional
+    public void updatePagamentoParcicipante(Long partidaId, String participanteEmail){
+        Partida partida = partidaRepository.searchPartidaByIdWithParticipantes(partidaId)
+                .orElseThrow(() -> new ResourceNotFoundException("Partida não encontrada."));
+
+        ParticipantePartida participantePartida = partida.getParticipantes().stream()
+                .filter(p -> p.getUsuario().getEmail().equals(participanteEmail))
+                .findAny()
+                .orElseThrow(() -> new ResourceNotFoundException("Participante inexistente."));
+
+        participantePartida.confirmarPagamentoEPresenca();
 
         partidaRepository.save(partida);
     }
