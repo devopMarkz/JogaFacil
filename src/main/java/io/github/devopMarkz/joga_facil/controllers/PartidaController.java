@@ -3,6 +3,8 @@ package io.github.devopMarkz.joga_facil.controllers;
 import io.github.devopMarkz.joga_facil.dtos.partida.PartidaRequestDTO;
 import io.github.devopMarkz.joga_facil.dtos.partida.PartidaResponseDTO;
 import io.github.devopMarkz.joga_facil.services.PartidaService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,10 @@ import static io.github.devopMarkz.joga_facil.services.GenerateURIService.gerarU
 
 @RestController
 @RequestMapping("/partidas")
+@Tag(
+        name = "Operações de Partida",
+        description = "Endpoints para realizar operações referentes a partidas"
+)
 public class PartidaController {
 
     private PartidaService partidaService;
@@ -24,6 +30,7 @@ public class PartidaController {
     }
 
     @GetMapping
+    @Operation(summary = "Obtém partidas", description = "Endpoint para obtenção de partidas por filtros")
     public ResponseEntity<Page<PartidaResponseDTO>> obterPartidasPorFiltros(
             @RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber,
             @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
@@ -37,6 +44,7 @@ public class PartidaController {
 
     @PostMapping
     @PreAuthorize("hasRole('ROLE_ORGANIZADOR')")
+    @Operation(summary = "Cria partidas", description = "Endpoint para criação de partidas")
     public ResponseEntity<PartidaResponseDTO> criarPartida(@Valid @RequestBody PartidaRequestDTO partidaRequestDTO){
         PartidaResponseDTO partida = partidaService.insert(partidaRequestDTO);
         return ResponseEntity.created(gerarURI(partida.id())).body(partida);
@@ -44,6 +52,7 @@ public class PartidaController {
 
     @PutMapping
     @PreAuthorize("hasRole('ROLE_ORGANIZADOR')")
+    @Operation(summary = "Atualiza partidas", description = "Endpoint para criação de partidas")
     public ResponseEntity<Void> atualizarPartida(@Valid @RequestBody PartidaRequestDTO partidaRequestDTO){
         partidaService.update(partidaRequestDTO);
         return ResponseEntity.noContent().build();

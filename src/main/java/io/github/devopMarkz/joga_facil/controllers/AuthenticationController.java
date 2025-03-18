@@ -3,9 +3,9 @@ package io.github.devopMarkz.joga_facil.controllers;
 import io.github.devopMarkz.joga_facil.dtos.auth.AuthDTO;
 import io.github.devopMarkz.joga_facil.dtos.token.TokenDTO;
 import io.github.devopMarkz.joga_facil.services.TokenService;
-import io.github.devopMarkz.joga_facil.services.impl.TokenServiceImpl;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +15,10 @@ import java.time.ZoneId;
 
 @RestController
 @RequestMapping("/auth")
+@Tag(
+        name = "Autenticação de Usuário",
+        description = "Autentica usuário para obter token JWT"
+)
 public class AuthenticationController {
 
     private AuthenticationManager authenticationManager;
@@ -26,6 +30,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
+    @Operation(summary = "Endpoint de Login", description = "Passa usuário e senha para obter token JWT")
     public ResponseEntity<TokenDTO> login(@RequestBody AuthDTO authDTO){
         var auth = new UsernamePasswordAuthenticationToken(authDTO.login(), authDTO.senha());
         authenticationManager.authenticate(auth);

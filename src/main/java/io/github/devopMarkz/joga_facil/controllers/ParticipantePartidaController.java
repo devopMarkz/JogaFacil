@@ -3,6 +3,8 @@ package io.github.devopMarkz.joga_facil.controllers;
 import io.github.devopMarkz.joga_facil.dtos.participantepartida.ParticipantePartidaResponseDTO;
 import io.github.devopMarkz.joga_facil.services.impl.ParticipantePartidaServiceImpl;
 import io.github.devopMarkz.joga_facil.utils.ObterUsuarioLogado;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +13,10 @@ import static io.github.devopMarkz.joga_facil.services.GenerateURIService.*;
 
 @RestController
 @RequestMapping("/participantes-partida")
+@Tag(
+        name = "Operações de Participante da Partida",
+        description = "Endpoints para realizar inscrições em partidas, deleção de participantes e confirmação de pagamento e presença."
+)
 public class ParticipantePartidaController {
 
     private final ParticipantePartidaServiceImpl partidaService;
@@ -22,6 +28,7 @@ public class ParticipantePartidaController {
     }
 
     @PostMapping("/{partidaId}/inscrever")
+    @Operation(summary = "Inscrição de usuário", description = "Endpoint de inscrição de usuário em partida")
     public ResponseEntity<ParticipantePartidaResponseDTO> inscreverParticipante(@PathVariable("partidaId") Long partidaId){
         ParticipantePartidaResponseDTO participantePartidaResponseDTO = partidaService.insert(partidaId);
         return ResponseEntity.created(gerarURI(obterUsuarioLogado.obterUsuario().getEmail())).body(participantePartidaResponseDTO);
@@ -29,6 +36,7 @@ public class ParticipantePartidaController {
 
     @DeleteMapping("/{participanteEmail}/{partidaId}")
     @PreAuthorize("hasRole('ROLE_ORGANIZADOR')")
+    @Operation(summary = "Deleta participante", description = "Endpoint de deleção de participante de partida específica")
     public ResponseEntity<Void> deletarParticipante(@PathVariable("participanteEmail") String participanteEmail, @PathVariable("partidaId") Long partidaId){
         partidaService.deleteParticipanteByPartidaId(participanteEmail, partidaId);
         return ResponseEntity.noContent().build();
@@ -36,6 +44,7 @@ public class ParticipantePartidaController {
 
     @PutMapping("/{partidaId}/participantes/{participanteEmail}/confirmar-pagamento")
     @PreAuthorize("hasRole('ROLE_ORGANIZADOR')")
+    @Operation(summary = "Deleta participante", description = "Endpoint de deleção de participante de partida específica")
     public ResponseEntity<Void> atualizarPagamentoDeParticipante(@PathVariable("partidaId") Long partidaId,
                                                                  @PathVariable("participanteEmail") String participanteEmail){
         partidaService.updatePagamentoParcicipante(partidaId, participanteEmail);
