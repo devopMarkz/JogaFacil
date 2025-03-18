@@ -1,14 +1,16 @@
 package io.github.devopMarkz.joga_facil.services.impl;
 
-import io.github.devopMarkz.joga_facil.dtos.participantepartida.ParticipantePartidaDTO;
 import io.github.devopMarkz.joga_facil.dtos.participantepartida.ParticipantePartidaResponseDTO;
 import io.github.devopMarkz.joga_facil.exceptions.ResourceNotFoundException;
 import io.github.devopMarkz.joga_facil.model.ParticipantePartida;
+import io.github.devopMarkz.joga_facil.model.ParticipantePartidaId;
 import io.github.devopMarkz.joga_facil.model.Partida;
 import io.github.devopMarkz.joga_facil.model.Usuario;
 import io.github.devopMarkz.joga_facil.repositories.ParticipantePartidaRepository;
 import io.github.devopMarkz.joga_facil.repositories.PartidaRepository;
+import io.github.devopMarkz.joga_facil.repositories.UsuarioRepository;
 import io.github.devopMarkz.joga_facil.services.exceptions.LimiteDeParticipantesAtingidoException;
+import io.github.devopMarkz.joga_facil.services.exceptions.OrganizadorInvalidoException;
 import io.github.devopMarkz.joga_facil.utils.ObterUsuarioLogado;
 import io.github.devopMarkz.joga_facil.utils.ParticipantePartidaMapper;
 import org.springframework.stereotype.Service;
@@ -19,12 +21,14 @@ public class ParticipantePartidaServiceImpl {
 
     private ParticipantePartidaRepository participantePartidaRepository;
     private PartidaRepository partidaRepository;
+    private UsuarioRepository usuarioRepository;
     private ObterUsuarioLogado obterUsuarioLogado;
     private ParticipantePartidaMapper participantePartidaMapper;
 
-    public ParticipantePartidaServiceImpl(ParticipantePartidaRepository participantePartidaRepository, PartidaRepository partidaRepository, ObterUsuarioLogado obterUsuarioLogado, ParticipantePartidaMapper participantePartidaMapper) {
+    public ParticipantePartidaServiceImpl(ParticipantePartidaRepository participantePartidaRepository, PartidaRepository partidaRepository, UsuarioRepository usuarioRepository, ObterUsuarioLogado obterUsuarioLogado, ParticipantePartidaMapper participantePartidaMapper) {
         this.participantePartidaRepository = participantePartidaRepository;
         this.partidaRepository = partidaRepository;
+        this.usuarioRepository = usuarioRepository;
         this.obterUsuarioLogado = obterUsuarioLogado;
         this.participantePartidaMapper = participantePartidaMapper;
     }
@@ -45,10 +49,8 @@ public class ParticipantePartidaServiceImpl {
         ParticipantePartida participantePartida = new ParticipantePartida(participante, partida);
 
         partida.getParticipantes().add(participantePartida);
-
-        partida.atualizarVagasDisponiveis();
-
-        atualizarValorAPagar(partida);
+        partida.subtrairVagasDisponiveis();
+        partida.atualizarValorAPagar();
 
         Partida partidaAtualizada = partidaRepository.save(partida);
 
@@ -56,17 +58,30 @@ public class ParticipantePartidaServiceImpl {
     }
 
     @Transactional
-    public void deleteParticipanteByPartidaId(Long participanteId, Long partidaId){
+    public void deleteParticipanteByPartidaId(String participanteEmail, Long partidaId){
         Partida partida = partidaRepository.findById(partidaId)
                 .orElseThrow(() -> new ResourceNotFoundException("Partida inexistente."));
 
+        Usuario organizador = obterUsuarioLogado.obterUsuario();
 
-    }
+        if(!organizador.equals(partida.getOrganizador())){
+            throw new OrganizadorInvalidoException(organizador.getEmail() + " não é organizador dessa partida.");
+        }
 
-    private void atualizarValorAPagar(Partida partida){
-        double valorTotal = partida.getCustoTotal();
-        double valorAPagar = partida.getParticipantes().isEmpty()? valorTotal : valorTotal / partida.getParticipantes().size();
-        partida.getParticipantes().forEach(participantePartida -> participantePartida.setValorPagamento(valorAPagar));
+        Usuario usuario = usuarioRepository.searchByEmail(participanteEmail)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário inexistente."));
+
+        ParticipantePartidaId participantePartidaId = new ParticipantePartidaId(usuario.getId(), partida.getId());
+
+        ParticipantePartida participantePartida = participantePartidaRepository.findById(participantePartidaId)
+                .orElseThrow(() -> new ResourceNotFoundException("Participante não encontrado."));
+
+        partida.getParticipantes().remove(participantePartida);
+
+        partida.adicionarVagasDisponiveis();
+        partida.atualizarValorAPagar();
+
+        partidaRepository.save(partida);
     }
 
 }
