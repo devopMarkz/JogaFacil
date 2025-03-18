@@ -120,11 +120,11 @@ public class ParticipantePartida {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
         ParticipantePartida that = (ParticipantePartida) object;
-        return Objects.equals(participantePartidaId, that.participantePartidaId);
+        return Objects.equals(usuario, that.usuario) && Objects.equals(partida, that.partida);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(participantePartidaId);
+        return Objects.hash(usuario, partida);
     }
 }

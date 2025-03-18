@@ -11,6 +11,7 @@ import io.github.devopMarkz.joga_facil.repositories.PartidaRepository;
 import io.github.devopMarkz.joga_facil.repositories.UsuarioRepository;
 import io.github.devopMarkz.joga_facil.services.exceptions.LimiteDeParticipantesAtingidoException;
 import io.github.devopMarkz.joga_facil.services.exceptions.OrganizadorInvalidoException;
+import io.github.devopMarkz.joga_facil.services.exceptions.ParticipanteJaInscritoNaPartidaException;
 import io.github.devopMarkz.joga_facil.utils.ObterUsuarioLogado;
 import io.github.devopMarkz.joga_facil.utils.ParticipantePartidaMapper;
 import org.springframework.stereotype.Service;
@@ -47,6 +48,10 @@ public class ParticipantePartidaServiceImpl {
         Usuario participante = obterUsuarioLogado.obterUsuario();
 
         ParticipantePartida participantePartida = new ParticipantePartida(participante, partida);
+
+        if (partida.getParticipantes().contains(participantePartida)){
+            throw new ParticipanteJaInscritoNaPartidaException(participante.getEmail() + " já está inscrito na partida.");
+        }
 
         partida.getParticipantes().add(participantePartida);
         partida.subtrairVagasDisponiveis();
