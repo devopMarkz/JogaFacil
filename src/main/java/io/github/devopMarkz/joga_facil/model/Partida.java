@@ -1,7 +1,6 @@
 package io.github.devopMarkz.joga_facil.model;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -123,8 +122,20 @@ public class Partida {
         this.participantes = participantes;
     }
 
-    public void atualizarVagasDisponiveis(){
-        this.vagasDisponiveis -= 1;
+    public void subtrairVagasDisponiveis() {
+        if (this.vagasDisponiveis > 0) {
+            this.vagasDisponiveis -= 1;
+        }
+    }
+
+    public void adicionarVagasDisponiveis() {
+        this.vagasDisponiveis += 1;
+    }
+
+    public void atualizarValorAPagar() {
+        double valorTotal = this.custoTotal;
+        double valorAPagar = this.participantes.isEmpty() ? valorTotal : valorTotal / this.participantes.size();
+        this.participantes.forEach(participantePartida -> participantePartida.setValorPagamento(valorAPagar));
     }
 
     @Override
