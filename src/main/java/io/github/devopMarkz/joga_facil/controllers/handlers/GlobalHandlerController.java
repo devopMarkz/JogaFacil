@@ -11,11 +11,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 @ControllerAdvice
@@ -82,6 +85,21 @@ public class GlobalHandlerController {
         HttpStatus status = HttpStatus.BAD_REQUEST;
         List<String> errors = List.of("Corpo da requisição inválido.");
         ErroResponseDTO erroResponseDTO = new ErroResponseDTO(Instant.now(), status.value(), request.getRequestURI(), errors);
+        return ResponseEntity.status(status).body(erroResponseDTO);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErroResponseDTO> methodArgumentNotValid(MethodArgumentNotValidException e, HttpServletRequest request){
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+
+        List<String> errors = new ArrayList<>();
+
+        for (FieldError x : e.getFieldErrors()){
+            errors.add(x.getDefaultMessage());
+        }
+
+        ErroResponseDTO erroResponseDTO = new ErroResponseDTO(Instant.now(), status.value(), request.getRequestURI(), errors);
+
         return ResponseEntity.status(status).body(erroResponseDTO);
     }
 }
