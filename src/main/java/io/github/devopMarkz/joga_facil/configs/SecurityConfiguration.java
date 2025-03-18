@@ -36,6 +36,13 @@ public class SecurityConfiguration {
                     auth.requestMatchers(HttpMethod.PUT, "/usuario").permitAll();
                     auth.requestMatchers(HttpMethod.POST, "/auth/login").permitAll();
                     auth.requestMatchers(HttpMethod.GET, "/actuator/**").hasAuthority("ROLE_ADMINISTRADOR");
+                    auth.requestMatchers(
+                            "/v2/api-docs/**",
+                            "/v3/api-docs/**",
+                            "/swagger-resources/**",
+                            "/swagger-ui.html",
+                            "/swagger-ui/**",
+                            "/webjars/**").permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .addFilterBefore(customAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
