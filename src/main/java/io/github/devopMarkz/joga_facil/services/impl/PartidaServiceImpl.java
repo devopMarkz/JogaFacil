@@ -75,6 +75,8 @@ public class PartidaServiceImpl implements PartidaService {
 
         partida.setVagasDisponiveis(vagasDisponiveis);
 
+        partida.atualizarValorAPagar();
+
         partidaRepository.save(partida);
     }
 
