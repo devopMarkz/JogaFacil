@@ -27,11 +27,11 @@ public class ParticipantePartidaController {
         return ResponseEntity.created(gerarURI(obterUsuarioLogado.obterUsuario().getEmail())).body(participantePartidaResponseDTO);
     }
 
-    @DeleteMapping("/{participanteId}/{partidaId}")
+    @DeleteMapping("/{participanteEmail}/{partidaId}")
     @PreAuthorize("hasRole('ROLE_ORGANIZADOR')")
-    public ResponseEntity<Void> deletarParticipante(@PathVariable("participanteId") Long participanteId, @PathVariable("partidaId") Long partidaId){
-
-        return null;
+    public ResponseEntity<Void> deletarParticipante(@PathVariable("participanteEmail") String participanteEmail, @PathVariable("partidaId") Long partidaId){
+        partidaService.deleteParticipanteByPartidaId(participanteEmail, partidaId);
+        return ResponseEntity.noContent().build();
     }
 
 }
