@@ -44,7 +44,7 @@ public class ParticipantePartidaController {
 
     @PutMapping("/{partidaId}/participantes/{participanteEmail}/confirmar-pagamento")
     @PreAuthorize("hasRole('ROLE_ORGANIZADOR')")
-    @Operation(summary = "Deleta participante", description = "Endpoint de deleção de participante de partida específica")
+    @Operation(summary = "Atualiza status de participante", description = "Endpoint de atualização de participante de partida específica")
     public ResponseEntity<Void> atualizarPagamentoDeParticipante(@PathVariable("partidaId") Long partidaId,
                                                                  @PathVariable("participanteEmail") String participanteEmail){
         partidaService.updatePagamentoParcicipante(partidaId, participanteEmail);
