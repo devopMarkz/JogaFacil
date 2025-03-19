@@ -43,4 +43,10 @@ public class UsuarioController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<UsuarioResponseDTO> buscarPorId(@PathVariable Long id){
+        var usuario = usuarioService.findById(id);
+        return ResponseEntity.ok(usuario);
+    }
+
 }

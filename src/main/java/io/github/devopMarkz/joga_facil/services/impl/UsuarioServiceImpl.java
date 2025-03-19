@@ -58,6 +58,13 @@ public class UsuarioServiceImpl implements UsuarioService {
         }
     }
 
+    @Transactional(readOnly = true)
+    public UsuarioResponseDTO findById(Long id){
+        var usuario = usuarioRepository.searchByIdWithRoles(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado."));
+        return usuarioMapper.toDTO(usuario);
+    }
+
     private boolean verificarExistenciaDoEmail(String email){
         return usuarioRepository.existsByEmail(email);
     }

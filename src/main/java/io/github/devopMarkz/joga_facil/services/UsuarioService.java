@@ -10,4 +10,6 @@ public interface UsuarioService {
 
     void updateSenha(UsuarioUpdateSenhaDTO usuarioUpdateSenhaDTO);
 
+    UsuarioResponseDTO findById(Long id);
+
     }

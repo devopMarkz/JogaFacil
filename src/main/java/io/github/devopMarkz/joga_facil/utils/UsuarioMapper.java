@@ -45,6 +45,6 @@ public class UsuarioMapper {
 
     public UsuarioResponseDTO toDTO(Usuario usuario){
         List<RoleDTO> roleDTOS = usuario.getRoles().stream().map(role -> new RoleDTO(role.getId(), role.getAuthority())).toList();
-        return new UsuarioResponseDTO(usuario.getId(), usuario.getNome(), usuario.getEmail(), usuario.getSenha(), usuario.getTelefone(), roleDTOS);
+        return new UsuarioResponseDTO(usuario.getId(), usuario.getNome(), usuario.getEmail(), usuario.getTelefone(), roleDTOS);
     }
 }
