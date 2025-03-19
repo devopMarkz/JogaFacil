@@ -1,6 +1,8 @@
 package io.github.devopMarkz.joga_facil.model;
 
 import jakarta.persistence.*;
+
+import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,13 +35,19 @@ public class Partida {
     @JoinColumn(name = "organizador_id")
     private Usuario organizador;
 
+    @Column(name = "codigo_partida")
+    private String codigoPartida;
+
     @OneToMany(mappedBy = "partida", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ParticipantePartida> participantes = new ArrayList<>();
 
     public Partida() {
+        SecureRandom random = new SecureRandom();
+        this.codigoPartida = String.format("%06d", random.nextInt(1000000));
     }
 
     public Partida(LocalDateTime dataHoraInicio, LocalDateTime dataHoraFim, String local, Double custoTotal, Integer vagasDisponiveis, Usuario organizador) {
+        this();
         this.dataHoraInicio = dataHoraInicio;
         this.dataHoraFim = dataHoraFim;
         this.local = local;
@@ -49,6 +57,7 @@ public class Partida {
     }
 
     public Partida(Long id, LocalDateTime dataHoraInicio, LocalDateTime dataHoraFim, String local, Double custoTotal, Integer vagasDisponiveis, Usuario organizador) {
+        this();
         this.id = id;
         this.dataHoraInicio = dataHoraInicio;
         this.dataHoraFim = dataHoraFim;
@@ -120,6 +129,14 @@ public class Partida {
 
     public void setParticipantes(List<ParticipantePartida> participantes) {
         this.participantes = participantes;
+    }
+
+    public String getCodigoPartida() {
+        return codigoPartida;
+    }
+
+    public void setCodigoPartida(String codigoPartida) {
+        this.codigoPartida = codigoPartida;
     }
 
     public void subtrairVagasDisponiveis() {
