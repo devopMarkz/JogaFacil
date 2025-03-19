@@ -4,10 +4,7 @@ import io.github.devopMarkz.joga_facil.exceptions.ResourceNotFoundException;
 import io.github.devopMarkz.joga_facil.dtos.erro.ErroResponseDTO;
 import io.github.devopMarkz.joga_facil.exceptions.SenhaIncorretaException;
 import io.github.devopMarkz.joga_facil.exceptions.UsuarioJaExistenteException;
-import io.github.devopMarkz.joga_facil.services.exceptions.LimiteDeParticipantesAtingidoException;
-import io.github.devopMarkz.joga_facil.services.exceptions.OrganizadorInvalidoException;
-import io.github.devopMarkz.joga_facil.services.exceptions.ParticipanteJaInscritoNaPartidaException;
-import io.github.devopMarkz.joga_facil.services.exceptions.TokenExpiradoException;
+import io.github.devopMarkz.joga_facil.services.exceptions.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -68,6 +65,14 @@ public class GlobalHandlerController {
     @ExceptionHandler(ParticipanteJaInscritoNaPartidaException.class)
     public ResponseEntity<ErroResponseDTO> participanteJaInscritoNaPartida(ParticipanteJaInscritoNaPartidaException e, HttpServletRequest request){
         HttpStatus status = HttpStatus.CONFLICT;
+        List<String> errors = List.of(e.getMessage());
+        ErroResponseDTO erroResponseDTO = new ErroResponseDTO(Instant.now(), status.value(), request.getRequestURI(), errors);
+        return ResponseEntity.status(status).body(erroResponseDTO);
+    }
+
+    @ExceptionHandler(CodigoPartidaIncorretoException.class)
+    public ResponseEntity<ErroResponseDTO> codigoPartidaIncorreto(CodigoPartidaIncorretoException e, HttpServletRequest request){
+        HttpStatus status = HttpStatus.BAD_REQUEST;
         List<String> errors = List.of(e.getMessage());
         ErroResponseDTO erroResponseDTO = new ErroResponseDTO(Instant.now(), status.value(), request.getRequestURI(), errors);
         return ResponseEntity.status(status).body(erroResponseDTO);

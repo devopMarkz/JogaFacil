@@ -10,6 +10,7 @@ import io.github.devopMarkz.joga_facil.model.enums.StatusPagamento;
 import io.github.devopMarkz.joga_facil.repositories.ParticipantePartidaRepository;
 import io.github.devopMarkz.joga_facil.repositories.PartidaRepository;
 import io.github.devopMarkz.joga_facil.repositories.UsuarioRepository;
+import io.github.devopMarkz.joga_facil.services.exceptions.CodigoPartidaIncorretoException;
 import io.github.devopMarkz.joga_facil.services.exceptions.LimiteDeParticipantesAtingidoException;
 import io.github.devopMarkz.joga_facil.services.exceptions.OrganizadorInvalidoException;
 import io.github.devopMarkz.joga_facil.services.exceptions.ParticipanteJaInscritoNaPartidaException;
@@ -36,9 +37,13 @@ public class ParticipantePartidaServiceImpl {
     }
 
     @Transactional
-    public ParticipantePartidaResponseDTO insert(Long partidaId){
+    public ParticipantePartidaResponseDTO insert(Long partidaId, String codigoPartida){
         Partida partida = partidaRepository.searchPartidaByIdWithParticipantes(partidaId)
                 .orElseThrow(() -> new ResourceNotFoundException("Partida não encontrada."));
+
+        if(!partida.getCodigoPartida().equals(codigoPartida)){
+            throw new CodigoPartidaIncorretoException("Código de partida incorreto.");
+        }
 
         long quantidadeDeParticipantes = participantePartidaRepository.countParticipantesByPartidaId(partidaId);
 

@@ -27,10 +27,11 @@ public class ParticipantePartidaController {
         this.obterUsuarioLogado = obterUsuarioLogado;
     }
 
-    @PostMapping("/{partidaId}/inscrever")
+    @PostMapping("/{partidaId}/inscrever/{codigoPartida}")
     @Operation(summary = "Inscrição de usuário", description = "Endpoint de inscrição de usuário em partida")
-    public ResponseEntity<ParticipantePartidaResponseDTO> inscreverParticipante(@PathVariable("partidaId") Long partidaId){
-        ParticipantePartidaResponseDTO participantePartidaResponseDTO = partidaService.insert(partidaId);
+    public ResponseEntity<ParticipantePartidaResponseDTO> inscreverParticipante(@PathVariable("partidaId") Long partidaId,
+                                                                                @PathVariable("codigoPartida") String codigoPartida){
+        ParticipantePartidaResponseDTO participantePartidaResponseDTO = partidaService.insert(partidaId, codigoPartida);
         return ResponseEntity.created(gerarURI(obterUsuarioLogado.obterUsuario().getEmail())).body(participantePartidaResponseDTO);
     }
 
