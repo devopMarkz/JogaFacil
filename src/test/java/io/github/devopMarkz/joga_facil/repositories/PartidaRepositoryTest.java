@@ -45,7 +45,7 @@ class PartidaRepositoryTest {
         LocalDateTime dataMaxima = LocalDateTime.of(2025, 06, 13, 15, 00);
 
         // Act
-        Page<Partida> partidaEncontrada = partidaRepository.searchByFilters(1L, dataMinima, dataMaxima, pageable);
+        Page<Partida> partidaEncontrada = partidaRepository.searchByFilters(1L, dataMinima, dataMaxima, usuario.getId(), pageable);
         Partida otherPartida = partidaEncontrada.getContent().getFirst();
 
         // Assert

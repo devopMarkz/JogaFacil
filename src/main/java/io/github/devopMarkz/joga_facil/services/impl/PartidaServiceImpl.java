@@ -3,6 +3,7 @@ package io.github.devopMarkz.joga_facil.services.impl;
 import io.github.devopMarkz.joga_facil.dtos.partida.PartidaRequestDTO;
 import io.github.devopMarkz.joga_facil.dtos.partida.PartidaResponseDTO;
 import io.github.devopMarkz.joga_facil.exceptions.ResourceNotFoundException;
+import io.github.devopMarkz.joga_facil.model.ParticipantePartida;
 import io.github.devopMarkz.joga_facil.model.Partida;
 import io.github.devopMarkz.joga_facil.model.Usuario;
 import io.github.devopMarkz.joga_facil.repositories.ParticipantePartidaRepository;
@@ -50,7 +51,11 @@ public class PartidaServiceImpl implements PartidaService {
         LocalDateTime dataHoraMinima = (dataMinima == null)? LocalDateTime.now() : dataMinima.atStartOfDay();
         LocalDateTime dataHoraMaxima = (dataMaxima == null)? null : dataMaxima.atStartOfDay();
 
-        Page<Partida> partidas = partidaRepository.searchByFilters(id, dataHoraMinima, dataHoraMaxima, pageable);
+        var usuario = obterUsuarioLogado.obterUsuario();
+
+        Page<Partida> partidas = partidaRepository.searchByFilters(id, dataHoraMinima, dataHoraMaxima, usuario.getId(), pageable);
+
+        // .filter(partida -> partida.getParticipantes().stream().map(ParticipantePartida::getUsuario).equals(usuario));
 
         return partidas.map(partida -> partidaMapper.toDTO(partida));
     }
