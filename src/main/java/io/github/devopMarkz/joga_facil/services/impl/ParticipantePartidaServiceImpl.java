@@ -1,6 +1,7 @@
 package io.github.devopMarkz.joga_facil.services.impl;
 
 import io.github.devopMarkz.joga_facil.dtos.participantepartida.ParticipantePartidaResponseDTO;
+import io.github.devopMarkz.joga_facil.dtos.partida.PartidaResponseDTO;
 import io.github.devopMarkz.joga_facil.exceptions.ResourceNotFoundException;
 import io.github.devopMarkz.joga_facil.model.ParticipantePartida;
 import io.github.devopMarkz.joga_facil.model.ParticipantePartidaId;
@@ -16,8 +17,14 @@ import io.github.devopMarkz.joga_facil.services.exceptions.OrganizadorInvalidoEx
 import io.github.devopMarkz.joga_facil.services.exceptions.ParticipanteJaInscritoNaPartidaException;
 import io.github.devopMarkz.joga_facil.utils.ObterUsuarioLogado;
 import io.github.devopMarkz.joga_facil.utils.ParticipantePartidaMapper;
+import io.github.devopMarkz.joga_facil.utils.PartidaMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class ParticipantePartidaServiceImpl {
@@ -27,13 +34,15 @@ public class ParticipantePartidaServiceImpl {
     private UsuarioRepository usuarioRepository;
     private ObterUsuarioLogado obterUsuarioLogado;
     private ParticipantePartidaMapper participantePartidaMapper;
+    private PartidaMapper partidaMapper;
 
-    public ParticipantePartidaServiceImpl(ParticipantePartidaRepository participantePartidaRepository, PartidaRepository partidaRepository, UsuarioRepository usuarioRepository, ObterUsuarioLogado obterUsuarioLogado, ParticipantePartidaMapper participantePartidaMapper) {
+    public ParticipantePartidaServiceImpl(ParticipantePartidaRepository participantePartidaRepository, PartidaRepository partidaRepository, UsuarioRepository usuarioRepository, ObterUsuarioLogado obterUsuarioLogado, ParticipantePartidaMapper participantePartidaMapper, PartidaMapper partidaMapper) {
         this.participantePartidaRepository = participantePartidaRepository;
         this.partidaRepository = partidaRepository;
         this.usuarioRepository = usuarioRepository;
         this.obterUsuarioLogado = obterUsuarioLogado;
         this.participantePartidaMapper = participantePartidaMapper;
+        this.partidaMapper = partidaMapper;
     }
 
     @Transactional
@@ -108,6 +117,14 @@ public class ParticipantePartidaServiceImpl {
         participantePartida.confirmarPagamentoEPresenca();
 
         partidaRepository.save(partida);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<PartidaResponseDTO> findByUserId(){
+        Pageable pageable = PageRequest.of(0, 10);
+        var usuario = obterUsuarioLogado.obterUsuario();
+        Page<Partida> partidas = participantePartidaRepository.searchPartidasByParticipante(usuario.getId(), pageable);
+        return partidas.map(partida -> partidaMapper.toDTO(partida));
     }
 
 }

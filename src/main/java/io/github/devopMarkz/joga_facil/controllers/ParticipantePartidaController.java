@@ -1,13 +1,16 @@
 package io.github.devopMarkz.joga_facil.controllers;
 
 import io.github.devopMarkz.joga_facil.dtos.participantepartida.ParticipantePartidaResponseDTO;
+import io.github.devopMarkz.joga_facil.dtos.partida.PartidaResponseDTO;
 import io.github.devopMarkz.joga_facil.services.impl.ParticipantePartidaServiceImpl;
 import io.github.devopMarkz.joga_facil.utils.ObterUsuarioLogado;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
 
 import static io.github.devopMarkz.joga_facil.services.GenerateURIService.*;
 
@@ -21,10 +24,12 @@ public class ParticipantePartidaController {
 
     private final ParticipantePartidaServiceImpl partidaService;
     private final ObterUsuarioLogado obterUsuarioLogado;
+    private final ParticipantePartidaServiceImpl participantePartidaService;
 
-    public ParticipantePartidaController(ParticipantePartidaServiceImpl partidaService, ObterUsuarioLogado obterUsuarioLogado) {
+    public ParticipantePartidaController(ParticipantePartidaServiceImpl partidaService, ObterUsuarioLogado obterUsuarioLogado, ParticipantePartidaServiceImpl participantePartidaService) {
         this.partidaService = partidaService;
         this.obterUsuarioLogado = obterUsuarioLogado;
+        this.participantePartidaService = participantePartidaService;
     }
 
     @PostMapping("/{partidaId}/inscrever/{codigoPartida}")
@@ -50,6 +55,13 @@ public class ParticipantePartidaController {
                                                                  @PathVariable("participanteEmail") String participanteEmail){
         partidaService.updatePagamentoParcicipante(partidaId, participanteEmail);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping
+    @Operation(summary = "Busca partidas que o participante está inscrito", description = "Endpoint de busca de partida que o usuario está inscrito")
+    public ResponseEntity<Page<PartidaResponseDTO>> buscarPartidas(){
+        Page<PartidaResponseDTO> partidas = participantePartidaService.findByUserId();
+        return ResponseEntity.ok(partidas);
     }
 
 }
