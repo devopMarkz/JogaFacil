@@ -59,8 +59,11 @@ public class ParticipantePartidaController {
 
     @GetMapping
     @Operation(summary = "Busca partidas que o participante está inscrito", description = "Endpoint de busca de partida que o usuario está inscrito")
-    public ResponseEntity<Page<PartidaResponseDTO>> buscarPartidas(){
-        Page<PartidaResponseDTO> partidas = participantePartidaService.findByUserId();
+    public ResponseEntity<Page<PartidaResponseDTO>> buscarPartidas(
+            @RequestParam(name = "pageNumber", defaultValue = "0", required = false) int pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize
+    ){
+        Page<PartidaResponseDTO> partidas = participantePartidaService.findByUserId(pageNumber, pageSize);
         return ResponseEntity.ok(partidas);
     }
 

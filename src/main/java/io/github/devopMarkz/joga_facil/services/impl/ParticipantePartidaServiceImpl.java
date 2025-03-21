@@ -120,8 +120,8 @@ public class ParticipantePartidaServiceImpl {
     }
 
     @Transactional(readOnly = true)
-    public Page<PartidaResponseDTO> findByUserId(){
-        Pageable pageable = PageRequest.of(0, 10);
+    public Page<PartidaResponseDTO> findByUserId(int pageNumber, int pageSize){
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
         var usuario = obterUsuarioLogado.obterUsuario();
         Page<Partida> partidas = participantePartidaRepository.searchPartidasByParticipante(usuario.getId(), pageable);
         return partidas.map(partida -> partidaMapper.toDTO(partida));

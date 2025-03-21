@@ -22,7 +22,7 @@ import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-// @WebMvcTest(UsuarioController.class)
+@WebMvcTest(UsuarioController.class)
 class UsuarioControllerTest {
 
     @MockitoBean
