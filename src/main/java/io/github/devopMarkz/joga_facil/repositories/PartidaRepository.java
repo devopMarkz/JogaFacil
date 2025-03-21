@@ -19,13 +19,16 @@ public interface PartidaRepository extends JpaRepository<Partida, Long> {
     WHERE (:id IS NULL OR obj.id = :id)
     AND (COALESCE(:dataMinima, obj.dataHoraInicio) = obj.dataHoraInicio OR obj.dataHoraInicio >= :dataMinima)
     AND (COALESCE(:dataMaxima, obj.dataHoraInicio) = obj.dataHoraInicio OR obj.dataHoraInicio <= :dataMaxima)
+    AND NOT EXISTS (
+        SELECT 1 FROM ParticipantePartida pp WHERE pp.partida.id = obj.id AND pp.usuario.id = :usuarioId
+    )
     ORDER BY obj.dataHoraInicio
     """)
     Page<Partida> searchByFilters(@Param("id") Long id,
-                         @Param("dataMinima") LocalDateTime dataMinima,
-                         @Param("dataMaxima") LocalDateTime dataMaxima,
-                         Pageable pageable
-    );
+                                  @Param("dataMinima") LocalDateTime dataMinima,
+                                  @Param("dataMaxima") LocalDateTime dataMaxima,
+                                  @Param("usuarioId") Long usuarioId,
+                                  Pageable pageable);
 
     @Query("SELECT p FROM Partida p LEFT JOIN FETCH p.participantes WHERE p.id = :partidaId")
     Optional<Partida> searchPartidaByIdWithParticipantes(@Param("partidaId") Long partidaId);
