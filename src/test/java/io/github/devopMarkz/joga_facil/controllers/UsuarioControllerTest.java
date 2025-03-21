@@ -22,7 +22,7 @@ import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(UsuarioController.class)
+// @WebMvcTest(UsuarioController.class)
 class UsuarioControllerTest {
 
     @MockitoBean
@@ -44,7 +44,7 @@ class UsuarioControllerTest {
     void setup(){
         usuario = new Usuario(null, "Marcos", "marcos@gmail.com", "123", "98986063363");
         usuarioRequestDTO = new UsuarioRequestDTO("Marcos", "marcos@gmail.com", "12345", "98986063303", null);
-        usuarioResponseDTO = new UsuarioResponseDTO(null, "Marcos", "marcos@gmail.com", "12345", "98986063303", null);
+        usuarioResponseDTO = new UsuarioResponseDTO(null, "Marcos", "marcos@gmail.com", "98986063303", null);
     }
 
     @Test
